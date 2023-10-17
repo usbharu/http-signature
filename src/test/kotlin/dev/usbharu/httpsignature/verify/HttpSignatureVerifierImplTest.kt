@@ -1,7 +1,7 @@
 package dev.usbharu.httpsignature.verify
 
 import dev.usbharu.httpsignature.common.*
-import dev.usbharu.httpsignature.sign.HttpSignatureSignerImpl
+import dev.usbharu.httpsignature.sign.RsaSha256HttpSignatureSigner
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import java.net.URL
@@ -60,7 +60,7 @@ class HttpSignatureVerifierImplTest {
         val x509EncodedKeySpec = X509EncodedKeySpec(publicKey)
         val rsaPublicKey = KeyFactory.getInstance("RSA").generatePublic(x509EncodedKeySpec) as RSAPublicKey
 
-        val httpSignatureSignerImpl = HttpSignatureSignerImpl()
+        val rsaSha256HttpSignatureSigner = RsaSha256HttpSignatureSigner()
         val headers = HttpHeaders(
             mapOf(
                 "X-Request-Id" to listOf("00000000-0000-0000-0000-000000000004"),
@@ -71,13 +71,13 @@ class HttpSignatureVerifierImplTest {
         )
         val url = URL("https://example.com/")
         val httpRequest = HttpRequest(url, headers, HttpMethod.GET)
-        val signature = httpSignatureSignerImpl.sign(
+        val signature = rsaSha256HttpSignatureSigner.sign(
             httpRequest, PrivateKey(rsaPrivateKey, "https://test-hideout.usbharu.dev/users/c#pubkey"),
             listOf("x-request-id", "tpp-redirect-uri", "digest", "psu-id")
         )
 
         val httpSignatureVerifierImpl =
-            HttpSignatureVerifierImpl(DefaultSignatureHeaderParser(), httpSignatureSignerImpl)
+            HttpSignatureVerifierImpl(DefaultSignatureHeaderParser(), rsaSha256HttpSignatureSigner)
         val verify = httpSignatureVerifierImpl.verify(
             HttpRequest(url, headers.plus("Signature", listOf(signature.signatureHeader)), HttpMethod.GET),
             PublicKey(rsaPublicKey, "https://test-hideout.usbharu.dev/users/c#pubkey")

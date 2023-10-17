@@ -4,6 +4,7 @@ import dev.usbharu.httpsignature.common.HttpHeaders
 import dev.usbharu.httpsignature.common.HttpMethod
 import dev.usbharu.httpsignature.common.HttpRequest
 import dev.usbharu.httpsignature.common.PrivateKey
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.net.URL
 import java.security.KeyFactory
@@ -12,9 +13,8 @@ import java.security.interfaces.RSAPublicKey
 import java.security.spec.PKCS8EncodedKeySpec
 import java.security.spec.X509EncodedKeySpec
 import java.util.*
-import kotlin.test.assertEquals
 
-class HttpSignatureSignerImplTest {
+class RsaSha256HttpSignatureSignerTest {
     @Test
     fun 署名を作成できる() {
         val privateKey = Base64.getDecoder().decode(
@@ -62,7 +62,7 @@ class HttpSignatureSignerImplTest {
         val x509EncodedKeySpec = X509EncodedKeySpec(publicKey)
         val rsaPublicKey = KeyFactory.getInstance("RSA").generatePublic(x509EncodedKeySpec) as RSAPublicKey
 
-        val httpSignatureSignerImpl = HttpSignatureSignerImpl()
+        val rsaSha256HttpSignatureSigner = RsaSha256HttpSignatureSigner()
         val headers = HttpHeaders(
             mapOf(
                 "X-Request-Id" to listOf("00000000-0000-0000-0000-000000000004"),
@@ -72,7 +72,7 @@ class HttpSignatureSignerImplTest {
             )
         )
         val httpRequest = HttpRequest(URL("https://example.com/"), headers, HttpMethod.GET)
-        val signature = httpSignatureSignerImpl.sign(
+        val signature = rsaSha256HttpSignatureSigner.sign(
             httpRequest, PrivateKey(rsaPrivateKey, "https://test-hideout.usbharu.dev/users/c#pubkey"),
             listOf("x-request-id", "tpp-redirect-uri", "digest", "psu-id")
         )
