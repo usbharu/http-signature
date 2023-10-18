@@ -11,11 +11,13 @@ class DefaultSignatureHeaderParser : SignatureHeaderParser {
             .map { it.trim('"') }
             .map { it.split("=\"") }
             .associate { it[0].split(" ").last() to it[1].trim('"') }
+            .toMutableMap()
         return Signature(
-            parameters.getValue("keyId"),
-            parameters.getValue("algorithm"),
-            parameters.getValue("headers").split(" "),
-            parameters.getValue("signature")
+            parameters.remove("keyId")!!,
+            parameters.remove("algorithm")!!,
+            parameters.remove("headers")?.split(" ")!!,
+            parameters.remove("signature")!!,
+            parameters
         )
     }
 }

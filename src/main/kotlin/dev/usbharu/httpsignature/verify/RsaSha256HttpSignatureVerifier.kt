@@ -6,7 +6,7 @@ import dev.usbharu.httpsignature.sign.HttpSignatureSigner
 import java.security.Signature
 import java.util.*
 
-class HttpSignatureVerifierImpl(
+class RsaSha256HttpSignatureVerifier(
     private val signatureHeaderParser: SignatureHeaderParser,
     private val httpSignatureSigner: HttpSignatureSigner
 ) : HttpSignatureVerifier {

@@ -12,7 +12,7 @@ import java.security.spec.PKCS8EncodedKeySpec
 import java.security.spec.X509EncodedKeySpec
 import java.util.*
 
-class HttpSignatureVerifierImplTest {
+class RsaSha256HttpSignatureVerifierTest {
     @Test
     fun 署名の検証を行える() {
         val privateKey = Base64.getDecoder().decode(
@@ -76,9 +76,9 @@ class HttpSignatureVerifierImplTest {
             listOf("x-request-id", "tpp-redirect-uri", "digest", "psu-id")
         )
 
-        val httpSignatureVerifierImpl =
-            HttpSignatureVerifierImpl(DefaultSignatureHeaderParser(), rsaSha256HttpSignatureSigner)
-        val verify = httpSignatureVerifierImpl.verify(
+        val rsaSha256HttpSignatureVerifier =
+            RsaSha256HttpSignatureVerifier(DefaultSignatureHeaderParser(), rsaSha256HttpSignatureSigner)
+        val verify = rsaSha256HttpSignatureVerifier.verify(
             HttpRequest(url, headers.plus("Signature", listOf(signature.signatureHeader)), HttpMethod.GET),
             PublicKey(rsaPublicKey, "https://test-hideout.usbharu.dev/users/c#pubkey")
         )
