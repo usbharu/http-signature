@@ -1,5 +1,3 @@
-import org.apache.tools.ant.taskdefs.email.Header
-
 plugins {
     kotlin("jvm") version "1.9.0"
     id("maven-publish")
@@ -26,9 +24,9 @@ kotlin {
 }
 
 
-publishing{
-    repositories{
-        maven{
+publishing {
+    repositories {
+        maven {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/usbharu/http-signature")
             credentials {
@@ -47,9 +45,18 @@ publishing{
                 value = project.findProperty("gpr.gitea") as String? ?: System.getenv("GITEA")
             }
 
-            authentication{
+            authentication {
                 create<HttpHeaderAuthentication>("header")
             }
+        }
+    }
+
+    publications {
+        register<MavenPublication>("maven") {
+            groupId = "dev.usbharu"
+            artifactId = "http-signature"
+            version = project.version.toString()
+            from(components["kotlin"])
         }
     }
 }
