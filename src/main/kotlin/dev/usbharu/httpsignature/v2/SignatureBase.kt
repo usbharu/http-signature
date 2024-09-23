@@ -2,18 +2,18 @@ package dev.usbharu.httpsignature.v2
 
 class SignatureBase() {
 
-    private val list = mutableMapOf<String, Component>()
+    private val list = mutableListOf<Component>()
 
     fun addComponent(component: Component) {
-        if (list[component.componentIdentifier] != null) {
+        if (list.indexOf(component) != -1) {
             throw IllegalArgumentException("Component with identifier ${component.componentIdentifier} already exists.")
         }
-        list[component.componentIdentifier] = component
+        list.add(component)
     }
 
     fun generateSignatureBase(signatureParameters: List<SignatureParameter>): String {
         val signatureBase =
-            list.values.joinToString(
+            list.joinToString(
                 separator = "",
                 postfix = "\n"
             ) { component -> "${component.componentIdentifier}: ${component.componentValue}" }
@@ -25,15 +25,15 @@ class SignatureBase() {
 
     fun generateSignatureParameterString(signatureParameters: List<SignatureParameter>): String {
         return (listOf(
-            list.keys.joinToString(
+            list.joinToString(
                 " ",
                 "(",
                 ")"
-            )
+            ) { it.componentIdentifier }
         ) + signatureParameters.map { "${it.name}=${it.value}" }).joinToString(";")
     }
 
     fun coveredComponents(): List<String> {
-        return list.map { it.key }
+        return list.map { it.componentIdentifier }
     }
 }
