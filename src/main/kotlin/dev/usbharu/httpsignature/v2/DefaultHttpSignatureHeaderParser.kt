@@ -1,6 +1,7 @@
 package dev.usbharu.httpsignature.v2
 
 import org.greenbytes.http.sfv.*
+import java.util.*
 
 class DefaultHttpSignatureHeaderParser() : HttpSignatureHeaderParser {
     override fun parse(signatureInputs: List<String>, signatures: List<String>): Map<String, Signature> {
@@ -53,6 +54,7 @@ class DefaultHttpSignatureHeaderParser() : HttpSignatureHeaderParser {
         val parser = Parser(signature)
         val map = parser.parseDictionary().get()
 
-        return map.map { it.key to it.value.get().toString() }.toMap()
+        return map.map { it.key to Base64.getEncoder().encodeToString((it.value as ByteSequenceItem).get().array()) }
+            .toMap()
     }
 }
