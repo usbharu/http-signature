@@ -15,7 +15,13 @@ class SignatureBase() {
         val signatureBase =
             list.values.joinToString(postfix = "\n") { component -> "${component.componentIdentifier}: ${component.componentValue}\n" }
 
-        val signatureParams = listOfNotNull(
+        val signatureParams = "\"@signature-params\":" + generateSignatureParameterString(signatureParameter)
+
+        return signatureBase + signatureParams
+    }
+
+    fun generateSignatureParameterString(signatureParameter: SignatureParameter): String {
+        return listOfNotNull(
             list.keys.joinToString(" ", "(", ")"),
             signatureParameter.algorithm?.let { algorithm -> "alg=\"${algorithm.value}\"" },
             signatureParameter.keyId?.let { keyId -> "keyid=\"$keyId\"" },
@@ -23,8 +29,6 @@ class SignatureBase() {
             signatureParameter.expires?.let { expires -> "expires=$expires" },
             signatureParameter.nonce?.let { nonce -> "nonce=\"$nonce\"" },
             signatureParameter.tag?.let { tag -> "tag=\"$tag\"" },
-        ).joinToString(";", prefix = "\"@signature-params\": ")
-
-        return signatureBase + signatureParams
+        ).joinToString(";")
     }
 }
