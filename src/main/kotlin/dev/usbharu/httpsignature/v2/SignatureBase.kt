@@ -23,10 +23,10 @@ class SignatureBase() {
     fun generateSignatureParameterString(signatureParameter: SignatureParameter): String {
         return listOfNotNull(
             list.keys.joinToString(" ", "(", ")"),
-            signatureParameter.algorithm?.let { algorithm -> "alg=\"${algorithm.value}\"" },
+            signatureParameter.algorithm?.let { algorithm -> "alg=\"${algorithm}\"" },
             signatureParameter.keyId?.let { keyId -> "keyid=\"$keyId\"" },
-            signatureParameter.created?.let { created -> "created=$created" },
-            signatureParameter.expires?.let { expires -> "expires=$expires" },
+            signatureParameter.created?.let { created -> "created=${created.epochSecond}" },
+            signatureParameter.expires?.let { expires -> "expires=${expires.epochSecond}" },
             signatureParameter.nonce?.let { nonce -> "nonce=\"$nonce\"" },
             signatureParameter.tag?.let { tag -> "tag=\"$tag\"" },
         ).joinToString(";")

@@ -1,11 +1,18 @@
 package dev.usbharu.httpsignature.v2
 
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import java.security.KeyFactory
+import java.security.Signature
 import java.security.interfaces.RSAPrivateKey
+import java.security.spec.MGF1ParameterSpec
 import java.security.spec.PKCS8EncodedKeySpec
+import java.security.spec.PSSParameterSpec
+import java.security.spec.X509EncodedKeySpec
+import java.time.Instant
 import java.util.*
+import kotlin.math.sign
 
 class GenerateSignatureTest {
 
@@ -74,5 +81,102 @@ class GenerateSignatureTest {
         println(signatureBase.generateSignatureBase(SignatureParameter()))
         println(sign.signature)
         println(sign.signatureInput)
+    }
+
+    @Test
+    fun test2() {
+
+        val key = KeyFactory.getInstance("RSASSA-PSS").generatePrivate(
+            PKCS8EncodedKeySpec(
+                Base64.getDecoder().decode(
+                    "MIIEvgIBADALBgkqhkiG9w0BAQoEggSqMIIEpgIBAAKCAQEAr4tmm3r20Wd/Pbqv" +
+                            "P1s2+QEtvpuRaV8Yq40gjUR8y2Rjxa6dpG2GXHbPfvMs8ct+Lh1GH45x28Rw3Ry5" +
+                            "3mm+oAXjyQ86OnDkZ5N8lYbggD4O3w6M6pAvLkhk95AndTrifbIFPNU8PPMO7Oyr" +
+                            "FAHqgDsznjPFmTOtCEcN2Z1FpWgchwuYLPL+Wokqltd11nqqzi+bJ9cvSKADYdUA" +
+                            "AN5WUtzdpiy6LbTgSxP7ociU4Tn0g5I6aDZJ7A8Lzo0KSyZYoA485mqcO0GVAdVw" +
+                            "9lq4aOT9v6d+nb4bnNkQVklLQ3fVAvJm+xdDOp9LCNCN48V2pnDOkFV6+U9nV5oy" +
+                            "c6XI2wIDAQABAoIBAQCUB8ip+kJiiZVKF8AqfB/aUP0jTAqOQewK1kKJ/iQCXBCq" +
+                            "pbo360gvdt05H5VZ/RDVkEgO2k73VSsbulqezKs8RFs2tEmU+JgTI9MeQJPWcP6X" +
+                            "aKy6LIYs0E2cWgp8GADgoBs8llBq0UhX0KffglIeek3n7Z6Gt4YFge2TAcW2WbN4" +
+                            "XfK7lupFyo6HHyWRiYHMMARQXLJeOSdTn5aMBP0PO4bQyk5ORxTUSeOciPJUFktQ" +
+                            "HkvGbym7KryEfwH8Tks0L7WhzyP60PL3xS9FNOJi9m+zztwYIXGDQuKM2GDsITeD" +
+                            "2mI2oHoPMyAD0wdI7BwSVW18p1h+jgfc4dlexKYRAoGBAOVfuiEiOchGghV5vn5N" +
+                            "RDNscAFnpHj1QgMr6/UG05RTgmcLfVsI1I4bSkbrIuVKviGGf7atlkROALOG/xRx" +
+                            "DLadgBEeNyHL5lz6ihQaFJLVQ0u3U4SB67J0YtVO3R6lXcIjBDHuY8SjYJ7Ci6Z6" +
+                            "vuDcoaEujnlrtUhaMxvSfcUJAoGBAMPsCHXte1uWNAqYad2WdLjPDlKtQJK1diCm" +
+                            "rqmB2g8QE99hDOHItjDBEdpyFBKOIP+NpVtM2KLhRajjcL9Ph8jrID6XUqikQuVi" +
+                            "4J9FV2m42jXMuioTT13idAILanYg8D3idvy/3isDVkON0X3UAVKrgMEne0hJpkPL" +
+                            "FYqgetvDAoGBAKLQ6JZMbSe0pPIJkSamQhsehgL5Rs51iX4m1z7+sYFAJfhvN3Q/" +
+                            "OGIHDRp6HjMUcxHpHw7U+S1TETxePwKLnLKj6hw8jnX2/nZRgWHzgVcY+sPsReRx" +
+                            "NJVf+Cfh6yOtznfX00p+JWOXdSY8glSSHJwRAMog+hFGW1AYdt7w80XBAoGBAImR" +
+                            "NUugqapgaEA8TrFxkJmngXYaAqpA0iYRA7kv3S4QavPBUGtFJHBNULzitydkNtVZ" +
+                            "3w6hgce0h9YThTo/nKc+OZDZbgfN9s7cQ75x0PQCAO4fx2P91Q+mDzDUVTeG30mE" +
+                            "t2m3S0dGe47JiJxifV9P3wNBNrZGSIF3mrORBVNDAoGBAI0QKn2Iv7Sgo4T/XjND" +
+                            "dl2kZTXqGAk8dOhpUiw/HdM3OGWbhHj2NdCzBliOmPyQtAr770GITWvbAI+IRYyF" +
+                            "S7Fnk6ZVVVHsxjtaHy1uJGFlaZzKR4AGNaUTOJMs6NadzCmGPAxNQQOCqoUjn4XR" +
+                            "rOjr9w349JooGXhOxbu8nOxX"
+                )
+            )
+        )
+
+        val signer = HttpMessageSignatureSigner()
+        val signatureBase = SignatureBaseBuilder()
+            .header("Host", "example.com")
+            .build()
+        val material = Material(
+            signatureBase,
+            key,
+            "sig"
+        )
+
+        val signatureParameter = SignatureParameter(
+            algorithm = "rsa-pss-sha512",
+            keyId = "a",
+            created = Instant.ofEpochSecond(1727076643),
+//            expires = Instant.ofEpochSecond(1727076943),
+            nonce = "a",
+            tag = "a"
+        )
+        val sign = signer.sign(
+            material,
+            signatureParameter,
+            RsaPssSha512SignatureSigner()
+        )
+
+        val expectedSignatureBase ="\"host\": example.com\n" +
+                "\"@signature-params\": (\"host\");alg=\"rsa-pss-sha512\";keyid=\"a\";created=1727076643;nonce=\"a\";tag=\"a\""
+
+        val expectedSignatureInput = "sig=(\"host\");alg=\"rsa-pss-sha512\";keyid=\"a\";created=1727076643;nonce=\"a\";tag=\"a\""
+
+        assertEquals(expectedSignatureBase, signatureBase.generateSignatureBase(signatureParameter))
+        assertEquals(expectedSignatureInput, sign.signatureInput)
+
+
+        println(sign.signature)
+        println(signatureBase.generateSignatureBase(signatureParameter))
+
+
+
+        val publicKey = KeyFactory.getInstance("RSA").generatePublic(
+            X509EncodedKeySpec(
+                Base64.getDecoder().decode(
+                    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAr4tmm3r20Wd/PbqvP1s2" +
+                            "+QEtvpuRaV8Yq40gjUR8y2Rjxa6dpG2GXHbPfvMs8ct+Lh1GH45x28Rw3Ry53mm+" +
+                            "oAXjyQ86OnDkZ5N8lYbggD4O3w6M6pAvLkhk95AndTrifbIFPNU8PPMO7OyrFAHq" +
+                            "gDsznjPFmTOtCEcN2Z1FpWgchwuYLPL+Wokqltd11nqqzi+bJ9cvSKADYdUAAN5W" +
+                            "Utzdpiy6LbTgSxP7ociU4Tn0g5I6aDZJ7A8Lzo0KSyZYoA485mqcO0GVAdVw9lq4" +
+                            "aOT9v6d+nb4bnNkQVklLQ3fVAvJm+xdDOp9LCNCN48V2pnDOkFV6+U9nV5oyc6XI" +
+                            "2wIDAQAB"
+                )
+            )
+        )
+
+        val signature = Signature.getInstance("RSASSA-PSS")
+        signature.setParameter(PSSParameterSpec("SHA-512", "MGF1", MGF1ParameterSpec.SHA512, 64, PSSParameterSpec.TRAILER_FIELD_BC))
+        signature.initVerify(publicKey)
+        signature.update(signatureBase.generateSignatureBase(signatureParameter).toByteArray())
+        val verify = signature.verify(Base64.getDecoder().decode(sign.signature))
+
+        assertTrue(verify)
     }
 }
