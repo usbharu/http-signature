@@ -32,4 +32,8 @@ class SignatureBase() {
             )
         ) + signatureParameters.map { "${it.name}=${it.value}" }).joinToString(";")
     }
+
+    fun coveredComponents(): List<String> {
+        return list.map { it.key }
+    }
 }

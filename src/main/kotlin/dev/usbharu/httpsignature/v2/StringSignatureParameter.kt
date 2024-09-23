@@ -1,6 +1,7 @@
 package dev.usbharu.httpsignature.v2
 
-class StringSignatureParameter(private val stringName: String, private val stringValue: String) : SignatureParameter {
+data class StringSignatureParameter(private val stringName: String, private val stringValue: String) :
+    SignatureParameter {
     override val name: String
         get() = stringName
     override val value: String

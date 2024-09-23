@@ -11,6 +11,7 @@ repositories {
 }
 
 dependencies {
+    implementation("org.greenbytes.http:structured-fields:0.4")
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
     testImplementation("org.mockito:mockito-inline:5.2.0")
 }
