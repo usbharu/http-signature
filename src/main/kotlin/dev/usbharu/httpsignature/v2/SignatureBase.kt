@@ -11,24 +11,25 @@ class SignatureBase() {
         list[component.componentIdentifier] = component
     }
 
-    fun generateSignatureBase(signatureParameter: SignatureParameter): String {
+    fun generateSignatureBase(signatureParameters: List<SignatureParameter>): String {
         val signatureBase =
-            list.values.joinToString(separator = "",postfix = "\n") { component -> "${component.componentIdentifier}: ${component.componentValue}" }
+            list.values.joinToString(
+                separator = "",
+                postfix = "\n"
+            ) { component -> "${component.componentIdentifier}: ${component.componentValue}" }
 
-        val signatureParams = "\"@signature-params\": " + generateSignatureParameterString(signatureParameter)
+        val signatureParams = "\"@signature-params\": " + generateSignatureParameterString(signatureParameters)
 
         return signatureBase + signatureParams
     }
 
-    fun generateSignatureParameterString(signatureParameter: SignatureParameter): String {
-        return listOfNotNull(
-            list.keys.joinToString(" ", "(", ")"),
-            signatureParameter.algorithm?.let { algorithm -> "alg=\"${algorithm}\"" },
-            signatureParameter.keyId?.let { keyId -> "keyid=\"$keyId\"" },
-            signatureParameter.created?.let { created -> "created=${created.epochSecond}" },
-            signatureParameter.expires?.let { expires -> "expires=${expires.epochSecond}" },
-            signatureParameter.nonce?.let { nonce -> "nonce=\"$nonce\"" },
-            signatureParameter.tag?.let { tag -> "tag=\"$tag\"" },
-        ).joinToString(";")
+    fun generateSignatureParameterString(signatureParameters: List<SignatureParameter>): String {
+        return (listOf(
+            list.keys.joinToString(
+                " ",
+                "(",
+                ")"
+            )
+        ) + signatureParameters.map { "${it.name}=${it.value}" }).joinToString(";")
     }
 }

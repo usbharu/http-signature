@@ -12,7 +12,6 @@ import java.security.spec.PSSParameterSpec
 import java.security.spec.X509EncodedKeySpec
 import java.time.Instant
 import java.util.*
-import kotlin.math.sign
 
 class GenerateSignatureTest {
 
@@ -64,7 +63,7 @@ class GenerateSignatureTest {
 
         val signer = HttpMessageSignatureSigner()
 
-        val sign = signer.sign(material, SignatureParameter(), RsaV1_5Sha256SignatureSigner())
+        val sign = signer.sign(material, SignatureParameters().toParameterList(), RsaV1_5Sha256SignatureSigner())
 
         val expectedSignatureBase = "\"host\": example.com\n" +
                 "\"@signature-params\": (\"host\")"
@@ -74,11 +73,14 @@ class GenerateSignatureTest {
 
         val expectedSignatureInput = "label=(\"host\")"
 
-        assertEquals(expectedSignatureBase, signatureBase.generateSignatureBase(SignatureParameter()))
+        assertEquals(
+            expectedSignatureBase,
+            signatureBase.generateSignatureBase(SignatureParameters().toParameterList())
+        )
         assertEquals(expectedSignatureValue, sign.signature)
         assertEquals(expectedSignatureInput, sign.signatureInput)
 
-        println(signatureBase.generateSignatureBase(SignatureParameter()))
+        println(signatureBase.generateSignatureBase(SignatureParameters().toParameterList()))
         println(sign.signature)
         println(sign.signatureInput)
     }
@@ -129,7 +131,7 @@ class GenerateSignatureTest {
             "sig"
         )
 
-        val signatureParameter = SignatureParameter(
+        val signatureParameters = SignatureParameters(
             algorithm = "rsa-pss-sha512",
             keyId = "a",
             created = Instant.ofEpochSecond(1727076643),
@@ -139,7 +141,7 @@ class GenerateSignatureTest {
         )
         val sign = signer.sign(
             material,
-            signatureParameter,
+            signatureParameters.toParameterList(),
             RsaPssSha512SignatureSigner()
         )
 
@@ -148,12 +150,12 @@ class GenerateSignatureTest {
 
         val expectedSignatureInput = "sig=(\"host\");alg=\"rsa-pss-sha512\";keyid=\"a\";created=1727076643;nonce=\"a\";tag=\"a\""
 
-        assertEquals(expectedSignatureBase, signatureBase.generateSignatureBase(signatureParameter))
+        assertEquals(expectedSignatureBase, signatureBase.generateSignatureBase(signatureParameters.toParameterList()))
         assertEquals(expectedSignatureInput, sign.signatureInput)
 
 
         println(sign.signature)
-        println(signatureBase.generateSignatureBase(signatureParameter))
+        println(signatureBase.generateSignatureBase(signatureParameters.toParameterList()))
 
 
 
@@ -174,7 +176,7 @@ class GenerateSignatureTest {
         val signature = Signature.getInstance("RSASSA-PSS")
         signature.setParameter(PSSParameterSpec("SHA-512", "MGF1", MGF1ParameterSpec.SHA512, 64, PSSParameterSpec.TRAILER_FIELD_BC))
         signature.initVerify(publicKey)
-        signature.update(signatureBase.generateSignatureBase(signatureParameter).toByteArray())
+        signature.update(signatureBase.generateSignatureBase(signatureParameters.toParameterList()).toByteArray())
         val verify = signature.verify(Base64.getDecoder().decode(sign.signature))
 
         assertTrue(verify)
