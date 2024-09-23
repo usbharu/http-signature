@@ -13,9 +13,9 @@ class SignatureBase() {
 
     fun generateSignatureBase(signatureParameter: SignatureParameter): String {
         val signatureBase =
-            list.values.joinToString(postfix = "\n") { component -> "${component.componentIdentifier}: ${component.componentValue}\n" }
+            list.values.joinToString(separator = "",postfix = "\n") { component -> "${component.componentIdentifier}: ${component.componentValue}" }
 
-        val signatureParams = "\"@signature-params\":" + generateSignatureParameterString(signatureParameter)
+        val signatureParams = "\"@signature-params\": " + generateSignatureParameterString(signatureParameter)
 
         return signatureBase + signatureParams
     }

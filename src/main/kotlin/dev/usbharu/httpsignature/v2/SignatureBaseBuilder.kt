@@ -61,6 +61,10 @@ class SignatureBaseBuilder {
         return this
     }
 
+    fun header(headerName: String,headerValue:String): SignatureBaseBuilder {
+        return header(headerName, listOf(headerValue))
+    }
+
     companion object {
         fun fromHttpRequest(httpRequest: HttpRequest): SignatureBaseBuilder {
             val signatureBaseBuilder = SignatureBaseBuilder()
