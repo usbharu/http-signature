@@ -1,4 +1,4 @@
-package dev.usbharu.httpsignature.v2
+package dev.usbharu.httpsignature.common
 
 class DerivedComponent(
     override val componentName: String,

@@ -1,4 +1,4 @@
-package dev.usbharu.httpsignature.v2
+package dev.usbharu.httpsignature.common
 
 interface Component {
     val componentName: String

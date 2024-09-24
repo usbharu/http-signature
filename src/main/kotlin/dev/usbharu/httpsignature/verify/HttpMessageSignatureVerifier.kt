@@ -1,5 +1,6 @@
-package dev.usbharu.httpsignature.v2
+package dev.usbharu.httpsignature.verify
 
+import dev.usbharu.httpsignature.common.Signature
 import java.util.*
 
 class HttpMessageSignatureVerifier {

@@ -1,4 +1,4 @@
-package dev.usbharu.httpsignature.v2
+package dev.usbharu.httpsignature.common
 
 data class Signature(
     val label: String,

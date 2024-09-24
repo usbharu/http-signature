@@ -1,4 +1,4 @@
-package dev.usbharu.httpsignature.v2
+package dev.usbharu.httpsignature.common
 
 class HttpMessageComponent(private val headerName: String, private val headerValues: List<String>) : Component {
     override val componentName: String

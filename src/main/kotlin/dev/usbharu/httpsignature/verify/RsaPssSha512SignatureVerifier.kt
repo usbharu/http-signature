@@ -1,4 +1,4 @@
-package dev.usbharu.httpsignature.v2
+package dev.usbharu.httpsignature.verify
 
 import java.security.spec.MGF1ParameterSpec
 import java.security.spec.PSSParameterSpec

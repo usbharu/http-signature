@@ -1,4 +1,7 @@
-package dev.usbharu.httpsignature.v2
+package dev.usbharu.httpsignature.sign
+
+import dev.usbharu.httpsignature.common.Signature
+import dev.usbharu.httpsignature.common.SignatureParameter
 
 class HttpMessageSignatureSigner {
     fun sign(material: Material, signatureParameters: List<SignatureParameter>, signer: SignatureSigner): Signature {

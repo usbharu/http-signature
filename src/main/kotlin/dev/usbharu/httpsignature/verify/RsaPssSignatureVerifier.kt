@@ -1,4 +1,4 @@
-package dev.usbharu.httpsignature.v2
+package dev.usbharu.httpsignature.verify
 
 import java.security.PublicKey
 import java.security.Signature

@@ -1,4 +1,4 @@
-package dev.usbharu.httpsignature.v2
+package dev.usbharu.httpsignature.common
 
 data class StringSignatureParameter(private val stringName: String, private val stringValue: String) :
     SignatureParameter {

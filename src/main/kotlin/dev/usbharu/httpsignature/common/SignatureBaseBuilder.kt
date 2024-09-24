@@ -1,4 +1,4 @@
-package dev.usbharu.httpsignature.v2
+package dev.usbharu.httpsignature.common
 
 import org.greenbytes.http.sfv.Parser
 import java.net.http.HttpRequest
