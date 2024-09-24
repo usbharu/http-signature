@@ -1,5 +1,6 @@
 package dev.usbharu.httpsignature.v2
 
+import org.greenbytes.http.sfv.Parser
 import java.net.http.HttpRequest
 import kotlin.jvm.optionals.getOrNull
 
@@ -56,13 +57,28 @@ class SignatureBaseBuilder {
         return this
     }
 
-    fun header(headerName:String,headerValues:List<String>): SignatureBaseBuilder {
+    fun header(headerName: String, headerValues: List<String>): SignatureBaseBuilder {
         signatureBase.addComponent(HttpMessageComponent(headerName, headerValues))
         return this
     }
 
-    fun header(headerName: String,headerValue:String): SignatureBaseBuilder {
+    fun header(headerName: String, headerValue: String): SignatureBaseBuilder {
         return header(headerName, listOf(headerValue))
+    }
+
+    fun structuredFieldItem(fieldName: String, fieldValue: String): SignatureBaseBuilder {
+        signatureBase.addComponent(StructuredFieldComponent(fieldName, Parser(fieldValue).parseItem()))
+        return this
+    }
+
+    fun structuredFieldList(fieldName: String, fieldValue: String): SignatureBaseBuilder {
+        signatureBase.addComponent(StructuredFieldComponent(fieldName, Parser(fieldValue).parseList()))
+        return this
+    }
+
+    fun structuredFieldDictionary(fieldName: String, fieldValue: String): SignatureBaseBuilder {
+        signatureBase.addComponent(StructuredFieldComponent(fieldName, Parser(fieldValue).parseDictionary()))
+        return this
     }
 
     companion object {
