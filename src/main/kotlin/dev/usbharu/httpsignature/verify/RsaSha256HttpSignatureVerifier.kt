@@ -6,6 +6,7 @@ import dev.usbharu.httpsignature.sign.HttpSignatureSigner
 import java.security.Signature
 import java.util.*
 
+@Deprecated("")
 class RsaSha256HttpSignatureVerifier(
     private val signatureHeaderParser: SignatureHeaderParser,
     private val httpSignatureSigner: HttpSignatureSigner

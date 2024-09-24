@@ -2,6 +2,7 @@ package dev.usbharu.httpsignature.verify
 
 import dev.usbharu.httpsignature.common.HttpHeaders
 
+@Deprecated("")
 class DefaultSignatureHeaderParser : SignatureHeaderParser {
     override fun parse(httpHeaders: HttpHeaders): Signature {
         val signatureHeader = httpHeaders.get("Signature").single()

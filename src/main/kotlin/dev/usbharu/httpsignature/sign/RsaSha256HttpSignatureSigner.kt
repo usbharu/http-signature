@@ -4,6 +4,7 @@ import dev.usbharu.httpsignature.common.HttpRequest
 import dev.usbharu.httpsignature.common.PrivateKey
 import java.util.*
 
+@Deprecated("")
 class RsaSha256HttpSignatureSigner : AbstractHttpSignatureSigner() {
     override fun sign(httpRequest: HttpRequest, privateKey: PrivateKey, signHeaders: List<String>): Signature {
         val buildSignString = buildSignString(httpRequest.url, httpRequest.method, httpRequest.headers, signHeaders)

@@ -9,6 +9,7 @@ import java.security.spec.PSSParameterSpec
 import java.time.Instant
 import java.util.*
 
+@Deprecated("")
 class Hs2019HttpSignatureSigner(private val expires: Long,private val salt:Int = 64) :
     AbstractHttpSignatureSigner() {
     override fun sign(httpRequest: HttpRequest, privateKey: PrivateKey, signHeaders: List<String>): Signature {

@@ -4,6 +4,7 @@ import dev.usbharu.httpsignature.common.HttpHeaders
 import dev.usbharu.httpsignature.common.HttpMethod
 import java.net.URL
 
+@Deprecated("")
 abstract class AbstractHttpSignatureSigner : HttpSignatureSigner {
     override fun buildSignString(
         url: URL,

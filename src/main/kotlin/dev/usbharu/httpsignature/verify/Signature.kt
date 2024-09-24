@@ -1,5 +1,6 @@
 package dev.usbharu.httpsignature.verify
 
+@Deprecated("")
 data class Signature(
     val keyId: String,
     val algorithm: String,

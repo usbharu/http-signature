@@ -6,6 +6,7 @@ import dev.usbharu.httpsignature.common.HttpRequest
 import dev.usbharu.httpsignature.common.PrivateKey
 import java.net.URL
 
+@Deprecated("")
 interface HttpSignatureSigner {
     fun sign(httpRequest: HttpRequest, privateKey: PrivateKey, signHeaders: List<String>): Signature
     fun signRaw(signString: String, privateKey: PrivateKey, signHeaders: List<String>): String

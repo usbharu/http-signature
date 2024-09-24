@@ -10,6 +10,7 @@ import java.security.spec.PSSParameterSpec
 import java.time.Instant
 import java.util.*
 
+@Deprecated("")
 class Hs2019HttpSignatureVerifier(
     private val signatureHeaderParser: SignatureHeaderParser,
     private val salt: Int = 64
