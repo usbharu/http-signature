@@ -11,6 +11,11 @@ class SignatureBaseBuilder {
         return signatureBase
     }
 
+    fun component(component: Component): SignatureBaseBuilder {
+        signatureBase.addComponent(component)
+        return this
+    }
+
     fun method(method: String): SignatureBaseBuilder {
         signatureBase.addComponent(DerivedComponent(DerivedComponentConstants.METHOD, "", method))
         return this
