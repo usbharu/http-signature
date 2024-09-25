@@ -5,9 +5,9 @@ import java.net.http.HttpRequest
 import kotlin.jvm.optionals.getOrNull
 
 class SignatureBaseBuilder {
-    private val signatureBase = SignatureBase()
+    private val signatureBase = DefaultSignatureBase()
 
-    fun build(): SignatureBase {
+    fun build(): DefaultSignatureBase {
         return signatureBase
     }
 
