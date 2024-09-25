@@ -17,8 +17,6 @@ class DefaultHttpSignatureHeaderParser() : HttpSignatureHeaderParser {
 
         val parseSignatures = parseSignatures(signatureString)
 
-        require(parseSignatureInputs.size == parseSignatures.size)
-
         return parseSignatureInputs.map {
             val signatureInput = parseSignatureInputs.getValue(it.key)
             it.key to Signature(
