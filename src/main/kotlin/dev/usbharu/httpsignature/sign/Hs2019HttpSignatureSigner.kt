@@ -1,6 +1,6 @@
 package dev.usbharu.httpsignature.sign
 
-import dev.usbharu.httpsignature.common.HttpMethod
+import dev.usbharu.httpsignature.common.HttpMethodBase
 import dev.usbharu.httpsignature.common.HttpRequest
 import dev.usbharu.httpsignature.common.PrivateKey
 import java.net.URL
@@ -46,10 +46,10 @@ class Hs2019HttpSignatureSigner(private val expires: Long,private val salt:Int =
     }
 
     @Throws(IllegalArgumentException::class)
-    override fun specialHeader(fieldName: String, url: URL, method: HttpMethod): String {
+    override fun specialHeader(fieldName: String, url: URL, method: HttpMethodBase): String {
         return when (fieldName) {
             "(request-target)" -> {
-                "(request-target): ${method.value.lowercase()} ${url.path}"
+                "(request-target): ${method.methodName.lowercase()} ${url.path}"
             }
 
             "(created)" -> {

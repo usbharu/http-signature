@@ -4,14 +4,12 @@ import dev.usbharu.httpsignature.common.HttpHeaders
 import dev.usbharu.httpsignature.common.HttpMethod
 import dev.usbharu.httpsignature.common.HttpRequest
 import dev.usbharu.httpsignature.common.PrivateKey
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.mockito.MockSettings
 import org.mockito.Mockito
 import org.mockito.Mockito.*
 import java.net.URL
 import java.security.KeyFactory
-import java.security.SignatureSpi
 import java.security.interfaces.RSAPrivateKey
 import java.security.interfaces.RSAPublicKey
 import java.security.spec.PKCS8EncodedKeySpec

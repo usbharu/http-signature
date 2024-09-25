@@ -1,7 +1,7 @@
 package dev.usbharu.httpsignature.verify
 
 import dev.usbharu.httpsignature.common.HttpHeaders
-import dev.usbharu.httpsignature.common.HttpMethod
+import dev.usbharu.httpsignature.common.HttpMethodBase
 import dev.usbharu.httpsignature.common.HttpRequest
 import dev.usbharu.httpsignature.common.PublicKey
 import java.net.URL
@@ -79,7 +79,7 @@ class Hs2019HttpSignatureVerifier(
 
     private fun buildSignString(
         url: URL,
-        method: HttpMethod,
+        method: HttpMethodBase,
         headers: HttpHeaders,
         signHeaders: List<String>,
         created: Long?,
@@ -88,7 +88,7 @@ class Hs2019HttpSignatureVerifier(
         return signHeaders.joinToString("\n") {
             when (it) {
                 "(request-target)" -> {
-                    "(request-target): ${method.value.lowercase()} ${url.path}"
+                    "(request-target): ${method.methodName.lowercase()} ${url.path}"
                 }
 
                 "(created)" -> {

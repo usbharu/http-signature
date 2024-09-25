@@ -12,7 +12,14 @@ class DefaultHttpSignatureHeaderParserTest {
                 "sig1=(\"@method\" \"@target-uri\" \"@authority\" " +
                         "     \"content-digest\" \"cache-control\");" +
                         "     created=1618884475;keyid=\"test-key-rsa-pss\""
-            ), listOf()
+            ), listOf(
+                "sig1=:P0wLUszWQjoi54udOtydf9IWTfNhy+r53jGFj9XZuP4uKwxyJo" +
+                        "1RSHi+oEF1FuX6O29d+lbxwwBao1BAgadijW+7O/PyezlTnqAOVPWx9GlyntiCiHz" +
+                        "C87qmSQjvu1CFyFuWSjdGa3qLYYlNm7pVaJFalQiKWnUaqfT4LyttaXyoyZW84jS8" +
+                        "gyarxAiWI97mPXU+OVM64+HVBHmnEsS+lTeIsEQo36T3NFf2CujWARPQg53r58Rmp" +
+                        "Z+J9eKR2CD6IJQvacn5A4Ix5BUAVGqlyp8JYm+S/CWJi31PNUjRRCusCVRj05NrxA" +
+                        "BNFv3r5S9IXf2fYJK+eyW4AiGVMvMcOg==:"
+            )
         )
     }
 

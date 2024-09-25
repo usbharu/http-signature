@@ -1,14 +1,14 @@
 package dev.usbharu.httpsignature.sign
 
 import dev.usbharu.httpsignature.common.HttpHeaders
-import dev.usbharu.httpsignature.common.HttpMethod
+import dev.usbharu.httpsignature.common.HttpMethodBase
 import java.net.URL
 
 @Deprecated("")
 abstract class AbstractHttpSignatureSigner : HttpSignatureSigner {
     override fun buildSignString(
         url: URL,
-        method: HttpMethod,
+        method: HttpMethodBase,
         headers: HttpHeaders,
         signHeaders: List<String>
     ): String {
@@ -22,11 +22,11 @@ abstract class AbstractHttpSignatureSigner : HttpSignatureSigner {
         return result
     }
 
-    protected open fun specialHeader(fieldName: String, url: URL, method: HttpMethod): String {
+    protected open fun specialHeader(fieldName: String, url: URL, method: HttpMethodBase): String {
         if (fieldName != "(request-target)") {
             throw IllegalArgumentException(fieldName + "is unsupported type")
         }
-        return "(request-target): ${method.value.lowercase()} ${url.path}"
+        return "(request-target): ${method.methodName.lowercase()} ${url.path}"
     }
 
     // TODO: 複数ヘッダーの正規化をする
